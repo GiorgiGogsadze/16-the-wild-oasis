@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
 import { useCabins } from "./useCabins";
@@ -32,6 +31,7 @@ import Menus from "../../ui/Menus";
 export default function CabinTable() {
   const { isLoading, cabins, error } = useCabins();
 
+  if (error) return <h2>{error.message}</h2>;
   if (isLoading) return <Spinner />;
 
   return (
