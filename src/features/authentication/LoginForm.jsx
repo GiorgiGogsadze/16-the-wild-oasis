@@ -6,13 +6,19 @@ import SpinnerMini from "../../ui/SpinnerMini";
 import FormRowVertical from "../../ui/FormRowVertical";
 import { useLogin } from "./useLogin";
 
-import { LoginSocialFacebook } from "reactjs-social-login";
-import { FacebookLoginButton } from "react-social-login-buttons";
+import { LoginSocialFacebook, LoginSocialGoogle } from "reactjs-social-login";
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+} from "react-social-login-buttons";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
   const [email, setEmail] = useState("giorgi@gogsadze.com");
   const [password, setPassword] = useState("123456");
   const { login, isLoggingIn } = useLogin();
+
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -54,6 +60,7 @@ function LoginForm() {
         appId="971533981434350"
         onResolve={(res) => {
           console.log(res);
+          navigate("/");
         }}
         onRejects={(err) => {
           console.log(err);
@@ -61,6 +68,23 @@ function LoginForm() {
       >
         <FacebookLoginButton />
       </LoginSocialFacebook>
+      <LoginSocialGoogle
+        client_id={
+          "154338058603-pic2cpsca70fn2icdsa3dmfenl9bbce6.apps.googleusercontent.com"
+        }
+        scope="openid profile email"
+        discoveryDocs="claims_supported"
+        access_type="offline"
+        onResolve={({ provider, data }) => {
+          console.log(provider, data);
+          navigate("/");
+        }}
+        onReject={(err) => {
+          console.log(err);
+        }}
+      >
+        <GoogleLoginButton />
+      </LoginSocialGoogle>
     </>
   );
 }
