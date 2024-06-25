@@ -6,12 +6,11 @@ import SpinnerMini from "../../ui/SpinnerMini";
 import FormRowVertical from "../../ui/FormRowVertical";
 import { useLogin } from "./useLogin";
 
-import { LoginSocialFacebook, LoginSocialGoogle } from "reactjs-social-login";
-import {
-  FacebookLoginButton,
-  GoogleLoginButton,
-} from "react-social-login-buttons";
+import { LoginSocialFacebook } from "reactjs-social-login";
+import { FacebookLoginButton } from "react-social-login-buttons";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 function LoginForm() {
   const [email, setEmail] = useState("giorgi@gogsadze.com");
@@ -68,15 +67,14 @@ function LoginForm() {
       >
         <FacebookLoginButton />
       </LoginSocialFacebook>
-      <LoginSocialGoogle
+      {/* <LoginSocialGoogle
         client_id={
           "154338058603-pic2cpsca70fn2icdsa3dmfenl9bbce6.apps.googleusercontent.com"
         }
         scope="openid profile email"
         discoveryDocs="claims_supported"
-        access_type="offline"
-        onResolve={({ provider, data }) => {
-          console.log(provider, data);
+        onResolve={({ data }) => {
+          console.log(data);
           navigate("/");
         }}
         onReject={(err) => {
@@ -84,7 +82,17 @@ function LoginForm() {
         }}
       >
         <GoogleLoginButton />
-      </LoginSocialGoogle>
+      </LoginSocialGoogle> */}
+      <GoogleLogin
+        onSuccess={(res) => {
+          const userData = jwtDecode(res.credential);
+          console.log(userData);
+          navigate("/");
+        }}
+        onError={(err) => {
+          console.log(err);
+        }}
+      />
     </>
   );
 }
