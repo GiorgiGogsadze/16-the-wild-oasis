@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import useURL from "../hooks/useURL";
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
+import { PAGE_SIZE } from "../utils/constants";
 
 const StyledPagination = styled.div`
   width: 100%;
@@ -55,3 +58,40 @@ const PaginationButton = styled.button`
     color: var(--color-brand-50);
   }
 `;
+
+export default function Pagination({ count }) {
+  const { value, setValue } = useURL("page");
+
+  if (count <= PAGE_SIZE) return null;
+
+  const currentPage = +value || 1;
+  const pageCount = Math.ceil(count / PAGE_SIZE);
+  const startFrom = PAGE_SIZE * (currentPage - 1) + 1;
+  const endTo =
+    PAGE_SIZE * currentPage < count ? PAGE_SIZE * currentPage : count;
+
+  return (
+    <StyledPagination>
+      <P>
+        Showing <span>{startFrom}</span> to <span>{endTo}</span> of{" "}
+        <span>{count}</span> results
+      </P>
+      <Buttons>
+        <PaginationButton
+          disabled={currentPage === 1}
+          onClick={() => setValue(currentPage - 1)}
+        >
+          <HiChevronLeft />
+          <span>Privious</span>
+        </PaginationButton>
+        <PaginationButton
+          disabled={currentPage === pageCount}
+          onClick={() => setValue(currentPage + 1)}
+        >
+          <span>Next</span>
+          <HiChevronRight />
+        </PaginationButton>
+      </Buttons>
+    </StyledPagination>
+  );
+}

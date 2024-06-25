@@ -7,7 +7,8 @@ import styled from "styled-components";
 const Main = styled.main`
   background-color: var(--color-grey-50);
   padding: 3rem 3.6rem 6.4rem;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
+  overflow-x: hidden;
 `;
 const StyledAppLayout = styled.div`
   display: grid;

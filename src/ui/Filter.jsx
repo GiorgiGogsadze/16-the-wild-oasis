@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import useURL from "../hooks/useURL";
 
 const StyledFilter = styled.div`
   border: 1px solid var(--color-grey-100);
@@ -15,7 +16,7 @@ const FilterButton = styled.button`
   border: none;
 
   ${(props) =>
-    props.active &&
+    props.$active &&
     css`
       background-color: var(--color-brand-600);
       color: var(--color-brand-50);
@@ -33,3 +34,28 @@ const FilterButton = styled.button`
     color: var(--color-brand-50);
   }
 `;
+
+export default function Filter({ filterField, options }) {
+  const { value, setValue } = useURL(filterField);
+  const { remove } = useURL("page");
+  const currentValue =
+    value || options.find((el) => el.default).value || options.at(0).value;
+
+  return (
+    <StyledFilter>
+      {options.map((el) => (
+        <FilterButton
+          key={el.value}
+          onClick={() => {
+            remove();
+            setValue(el.value);
+          }}
+          $active={currentValue === el.value}
+          disabled={currentValue === el.value}
+        >
+          {el.label}
+        </FilterButton>
+      ))}
+    </StyledFilter>
+  );
+}

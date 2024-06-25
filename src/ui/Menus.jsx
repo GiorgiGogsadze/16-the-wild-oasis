@@ -35,8 +35,8 @@ const StyledList = styled.ul`
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
 
-  right: ${(props) => props.position.x}px;
-  top: ${(props) => props.position.y}px;
+  right: ${(props) => props.$position.x}px;
+  top: ${(props) => props.$position.y}px;
 
   z-index: 10;
 `;
@@ -112,7 +112,7 @@ function List({ children, id }) {
   const ref = useOutsideClick(closeAll);
   if (openId !== id) return null;
   return (
-    <StyledList position={position} ref={ref}>
+    <StyledList $position={position} ref={ref}>
       {children}
     </StyledList>
   );

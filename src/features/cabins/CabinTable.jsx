@@ -3,36 +3,38 @@ import CabinRow from "./CabinRow";
 import { useCabins } from "./useCabins";
 import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
-
-// const Table = styled.div`
-//   border: 1px solid var(--color-grey-200);
-
-//   font-size: 1.4rem;
-//   background-color: var(--color-grey-0);
-//   border-radius: 7px;
-//   overflow: hidden;
-// `;
-
-// const TableHeader = styled.header`
-//   display: grid;
-//   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-//   column-gap: 1.5rem;
-//   align-items: center;
-
-//   background-color: var(--color-grey-50);
-//   border-bottom: 1px solid var(--color-grey-100);
-//   text-transform: uppercase;
-//   letter-spacing: 0.4px;
-//   font-weight: 600;
-//   color: var(--color-grey-600);
-//   padding: 1.6rem 2.4rem;
-// `;
+import { useSearchParams } from "react-router-dom";
+import Empty from "../../ui/Empty";
 
 export default function CabinTable() {
   const { isLoading, cabins, error } = useCabins();
+  const [searchParams] = useSearchParams();
 
   if (error) return <h2>{error.message}</h2>;
   if (isLoading) return <Spinner />;
+
+  if (!cabins.length) return <Empty resourceName="cabins" />;
+
+  let resultCabins;
+  // 1) Filter
+  const filterValue = searchParams.get("discount") || "all";
+  if (filterValue === "all") resultCabins = cabins;
+  else if (filterValue === "no-discount")
+    resultCabins = cabins.filter((el) => el.discount === 0);
+  else if (filterValue === "with-discount")
+    resultCabins = cabins.filter((el) => el.discount > 0);
+  else throw new Error("unreachable option");
+
+  // 2) Sort
+  const sortValue = searchParams.get("sortBy") || "name-asc";
+  const [sField, sDirection] = sortValue.split("-");
+  const sModifier = sDirection === "asc" ? 1 : -1;
+
+  typeof resultCabins[0][sField] === "string"
+    ? resultCabins.sort(
+        (a, b) => a[sField].localeCompare(b[sField]) * sModifier
+      )
+    : resultCabins.sort((a, b) => sModifier * (a[sField] - b[sField]));
 
   return (
     <Menus>
@@ -46,7 +48,7 @@ export default function CabinTable() {
           <div></div>
         </Table.Header>
         <Table.Body
-          data={cabins}
+          data={resultCabins}
           render={(cabin) => <CabinRow key={cabin.id} cabin={cabin} />}
         />
       </Table>
