@@ -6,23 +6,35 @@ import SpinnerMini from "../../ui/SpinnerMini";
 import FormRowVertical from "../../ui/FormRowVertical";
 import { useLogin } from "./useLogin";
 
-import { LoginSocialFacebook } from "reactjs-social-login";
-import { FacebookLoginButton } from "react-social-login-buttons";
-import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
+// import { LoginSocialFacebook, LoginSocialGoogle } from "reactjs-social-login";
+import {
+  FacebookLoginButton,
+  GoogleLoginButton,
+} from "react-social-login-buttons";
+// import { useNavigate } from "react-router-dom";
+import { loginFacebook, loginGoogle } from "../../services/apiAuth";
+// import { GoogleLogin } from "@react-oauth/google";
+// import { jwtDecode } from "jwt-decode";
 
 function LoginForm() {
   const [email, setEmail] = useState("giorgi@gogsadze.com");
   const [password, setPassword] = useState("123456");
   const { login, isLoggingIn } = useLogin();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
     if (!email || !password) return;
-    login({ email, password });
+    login(
+      { email, password },
+      {
+        onSettled: () => {
+          setEmail("");
+          setPassword("");
+        },
+      }
+    );
   }
 
   return (
@@ -55,8 +67,9 @@ function LoginForm() {
           </Button>
         </FormRowVertical>
       </Form>
-      <LoginSocialFacebook
+      {/* <LoginSocialFacebook
         appId="971533981434350"
+        scope="public_profile"
         onResolve={(res) => {
           console.log(res);
           navigate("/");
@@ -66,7 +79,7 @@ function LoginForm() {
         }}
       >
         <FacebookLoginButton />
-      </LoginSocialFacebook>
+      </LoginSocialFacebook> */}
       {/* <LoginSocialGoogle
         client_id={
           "154338058603-pic2cpsca70fn2icdsa3dmfenl9bbce6.apps.googleusercontent.com"
@@ -83,7 +96,7 @@ function LoginForm() {
       >
         <GoogleLoginButton />
       </LoginSocialGoogle> */}
-      <GoogleLogin
+      {/* <GoogleLogin
         onSuccess={(res) => {
           const userData = jwtDecode(res.credential);
           console.log(userData);
@@ -91,6 +104,16 @@ function LoginForm() {
         }}
         onError={(err) => {
           console.log(err);
+        }}
+      /> */}
+      <FacebookLoginButton
+        onClick={() => {
+          loginFacebook();
+        }}
+      />
+      <GoogleLoginButton
+        onClick={() => {
+          loginGoogle();
         }}
       />
     </>
