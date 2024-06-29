@@ -10,10 +10,9 @@ export default function CabinTable() {
   const { isLoading, cabins, error } = useCabins();
   const [searchParams] = useSearchParams();
 
-  if (error) return <h2>{error.message}</h2>;
   if (isLoading) return <Spinner />;
 
-  if (!cabins.length) return <Empty resourceName="cabins" />;
+  if (error || !cabins.length) return <Empty resourceName="cabins" />;
 
   let resultCabins;
   // 1) Filter

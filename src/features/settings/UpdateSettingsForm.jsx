@@ -1,10 +1,10 @@
-import { useForm } from "react-hook-form";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Spinner from "../../ui/Spinner";
 import { useSettings } from "./useSettings";
 import { useSettingsUpdate } from "./useSettingsUpdate";
+import Empty from "../../ui/Empty";
 
 function UpdateSettingsForm() {
   const { isLoading, settings = {}, error } = useSettings();
@@ -20,6 +20,7 @@ function UpdateSettingsForm() {
     updateSettings({ [field]: value });
   }
 
+  if (error) return <Empty resourceName="settings" />;
   if (isLoading) return <Spinner />;
   return (
     <Form>

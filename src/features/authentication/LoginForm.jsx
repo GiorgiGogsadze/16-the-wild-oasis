@@ -68,7 +68,7 @@ function LoginForm() {
         </FormRowVertical>
       </Form>
       {/* <LoginSocialFacebook
-        appId="971533981434350"
+        appId="2353623"
         scope="public_profile"
         onResolve={(res) => {
           console.log(res);
@@ -82,7 +82,7 @@ function LoginForm() {
       </LoginSocialFacebook> */}
       {/* <LoginSocialGoogle
         client_id={
-          "154338058603-pic2cpsca70fn2icdsa3dmfenl9bbce6.apps.googleusercontent.com"
+          "445758568-i3l4cp1b2846p7phol1t7b2.apps.googleusercontent.com"
         }
         scope="openid profile email"
         discoveryDocs="claims_supported"

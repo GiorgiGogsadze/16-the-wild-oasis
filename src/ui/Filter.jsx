@@ -39,7 +39,7 @@ export default function Filter({ filterField, options }) {
   const { value, setValue } = useURL(filterField);
   const { remove } = useURL("page");
   const currentValue =
-    value || options.find((el) => el.default).value || options.at(0).value;
+    value || options.find((el) => el.default)?.value || options.at(0).value;
 
   return (
     <StyledFilter>

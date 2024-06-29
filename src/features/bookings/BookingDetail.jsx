@@ -7,6 +7,7 @@ import Tag from "../../ui/Tag";
 import ButtonGroup from "../../ui/ButtonGroup";
 import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
+import Empty from "../../ui/Empty";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
 import { useBooking } from "./useBooking";
@@ -37,8 +38,8 @@ function BookingDetail() {
   const navigate = useNavigate();
   const moveBack = useMoveBack();
 
-  if (error) return <h2>{error.message}</h2>;
   if (isLoading || isCheckingOut || isDeleting) return <Spinner />;
+  if (error || !booking) return <Empty resourceName="booking" />;
 
   const { status, id } = booking;
 

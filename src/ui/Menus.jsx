@@ -93,6 +93,8 @@ export function Menu({ children }) {
 function Toggle({ id }) {
   const { setOpenId, setPosition } = useMenus();
   function handleClick(e) {
+    // e.stopPropagation();
+
     const rect = e.target.closest("button").getBoundingClientRect();
     setPosition({
       x: window.innerWidth - rect.x,
@@ -102,14 +104,17 @@ function Toggle({ id }) {
   }
 
   return (
-    <StyledToggle onClick={handleClick}>
+    <StyledToggle onClick={handleClick} id={`toggleBtn-${id}`}>
       <HiMiniEllipsisVertical />
     </StyledToggle>
   );
 }
 function List({ children, id }) {
   const { openId, closeAll, position } = useMenus();
-  const ref = useOutsideClick(closeAll);
+  const ref = useOutsideClick(closeAll, {
+    exceptIds: [`toggleBtn-${id}`],
+    // listenCapturing: false,
+  });
   if (openId !== id) return null;
   return (
     <StyledList $position={position} ref={ref}>
