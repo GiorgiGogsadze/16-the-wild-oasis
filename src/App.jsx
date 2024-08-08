@@ -19,7 +19,6 @@ import Checkin from "./pages/Checkin";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import InternetGate from "./ui/InternetGate";
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
